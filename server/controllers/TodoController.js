@@ -14,6 +14,7 @@ const saveTodo = async (req, res) => {
 
 const deleteTodo = async (req, res) => {
   const { _id } = req.body;
+  console.log(req.body);
 
   TodoModel.findByIdAndDelete(_id)
     .then(() => res.status(201).send({msg:"Delete Success"}))
@@ -22,7 +23,7 @@ const deleteTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
   const { _id, text } = req.body;
-
+  console.log(req.body);
   let updatedTodo;
 
   TodoModel.findByIdAndUpdate(_id, text)

@@ -10,6 +10,7 @@ const Todo = () => {
   const [isUpdating, setIsUpdating] = useState("");
 
   const addUpdate = (_id) => {
+    console.log(_id);
     if (isUpdating === "") {
       //   axios
       //     .post("http://localhost:5000/api/todo/save-todo", {text})
@@ -28,24 +29,48 @@ const Todo = () => {
         .then((res) => res.json())
         .then((data) => setTodo(data), setText(""))
         .catch((err) => console.log(err));
+    } else {
+      // update instead of adding
+
+      fetch(`http://localhost:5000/api/todo/update-todo`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+        body: JSON.stringify({ text: text }), // SCHEMA CORRELATION
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data), setText(""))
+        .catch((err) => console.log(err));
     }
   };
 
   const deleteToDo = (_id) => {
-    fetch("http://localhost:5000/api/todo/delete-todo", {
+    console.log(_id);
+    fetch(`http://localhost:5000/api/todo/delete-todo`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       method: "DELETE",
-      body: JSON.stringify({ text: text }),
+      body: JSON.stringify({ _id: _id }),
     })
       .then((res) => res.json())
-      .then((data) => setTodo(data=""), setText(""))
       .catch((err) => console.log(err));
+
+    // axios
+    //   .delete("http://localhost:5000/api/todo/delete-todo", { _id })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
-  const updateToDo = (_id, text) => {};
+  const updateToDo = (_id, text) => {
+    setIsUpdating(_id);
+    setText(text);
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/api/todo/get-todo")
@@ -66,7 +91,7 @@ const Todo = () => {
           onChange={(e) => setText(e.target.value)}
         />
         <div className="add" onClick={addUpdate}>
-          Add
+          {isUpdating ? "Update" : "Add"}
         </div>
       </div>
 
