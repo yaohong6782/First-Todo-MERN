@@ -7,11 +7,11 @@ import "./Todo.css";
 const Todo = () => {
   const [text, setText] = useState("");
   const [todo, setTodo] = useState([]);
-  const [isUpdating, setIsUpdating] = useState("");
+  const [isUpdatingId, setIsUpdatingId] = useState(""); 
 
   const addUpdate = (_id) => {
-    console.log(_id);
-    if (isUpdating === "") {
+    if (isUpdatingId === "") {
+  
       //   axios
       //     .post("http://localhost:5000/api/todo/save-todo", {text})
       //     .then((res) => console.log(res), setText(""))
@@ -31,24 +31,23 @@ const Todo = () => {
         .catch((err) => console.log(err));
     } else {
       // update instead of adding
-
+      // console.log(_id);
       fetch(`http://localhost:5000/api/todo/update-todo`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         method: "PATCH",
-        body: JSON.stringify({ text: text }), // SCHEMA CORRELATION
+        body: JSON.stringify({_id: isUpdatingId, text : text})// SCHEMA CORRELATION
       })
         .then((res) => res.json())
-        .then((data) => console.log(data), setText(""))
+        .then(() => setText(""), setIsUpdatingId(""))
         .catch((err) => console.log(err));
     }
   };
 
   const deleteToDo = (_id) => {
-    console.log(_id);
-    fetch(`http://localhost:5000/api/todo/delete-todo`, {
+    fetch(`http://localhost:5000/api/todo/delete-todo/${_id}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -58,17 +57,10 @@ const Todo = () => {
     })
       .then((res) => res.json())
       .catch((err) => console.log(err));
-
-    // axios
-    //   .delete("http://localhost:5000/api/todo/delete-todo", { _id })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   const updateToDo = (_id, text) => {
-    setIsUpdating(_id);
+    setIsUpdatingId(_id);
     setText(text);
   };
 
@@ -91,7 +83,7 @@ const Todo = () => {
           onChange={(e) => setText(e.target.value)}
         />
         <div className="add" onClick={addUpdate}>
-          {isUpdating ? "Update" : "Add"}
+          {isUpdatingId ? "Update" : "Add"}
         </div>
       </div>
 

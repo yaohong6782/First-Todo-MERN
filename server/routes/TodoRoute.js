@@ -9,6 +9,6 @@ router.post("/save-todo", getTodo.saveTodo);
 
 router.patch("/update-todo", getTodo.updateTodo);
 
-router.delete("/delete-todo", getTodo.deleteTodo);
+router.delete("/delete-todo/:pid", getTodo.deleteTodo);
 
 module.exports = router;

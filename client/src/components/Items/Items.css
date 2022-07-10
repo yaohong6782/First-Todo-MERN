@@ -1,9 +1,10 @@
 .item {
   position: relative;
   margin-top: 1rem;
-  background-color: black;
+  background-color: #141712;
   color: white;
   padding: 1.5rem 3rem;
+  border-radius: 20px;
 }
 
 .icons {
@@ -16,5 +17,5 @@
 }
 
 i {
-    cursor:pointer;
+  cursor: pointer;
 }
